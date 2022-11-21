@@ -1,4 +1,6 @@
-from typing import Any
+"""Token related classes"""
+
+from typing import Any, List
 
 
 class Token:
@@ -10,12 +12,12 @@ class Token:
 
     @property
     def type(self):
-        """Retrives the type of the token"""
+        """Retrieves the type of the token"""
         return self.__Type
 
     @property
     def value(self):
-        """Retrives the value of the token"""
+        """Retrieves the value of the token"""
         return self.__Value
 
     @value.setter
@@ -23,5 +25,15 @@ class Token:
         """Sets the value of the token"""
         self.__Value = value
 
+    def __str__(self) -> str:
+        return f'[{self.type}: {self.value}]'
 
-__all__ = ["Token"]
+
+class TokenList(List[Token]):
+    """Token List Class"""
+
+    def __str__(self) -> str:
+        return "".join([str(t) for t in self])
+
+
+__all__ = ["Token", "TokenList"]
