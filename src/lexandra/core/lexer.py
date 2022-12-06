@@ -2,8 +2,8 @@
 
 
 from typing import Callable, TypeVar
-import pylexer.core.token as _Token
-import pylexer.core.cursor as _Cursor
+import lexandra.core.token as _Token
+import lexandra.core.cursor as _Cursor
 
 
 class Settings:

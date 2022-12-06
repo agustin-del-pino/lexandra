@@ -1,9 +1,9 @@
 """Lexer's factory module"""
 
 from typing import Callable
-from pylexer.core import Lexer, Settings, Cursor, Token
-from pylexer.utils import char_range
-from pylexer.factory import constants
+from lexandra.core import Lexer, Settings, Cursor, Token
+from lexandra.utils import char_range
+from lexandra.factory import constants
 
 
 def _lex_numbs_float(cursor: Cursor, settings: Settings):
