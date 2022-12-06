@@ -1,19 +1,19 @@
-# Pylexer
+# Lexandra
 
 Create a lexer by decorators.
 
 # How to use it
 
 ```python
-import pylexer.core as plx
+import lexandra.core as lxd
 
-lexer: pylexer.Lexer = plx.Lexer(
+lexer: lxd.Lexer = lxd.Lexer(
     numbers='0123456789'
 )
 
 @lexer.numbers
-def lex_numbers(c: plx.Cursor, s: plx.Settings) -> plx.Token:
-    t = plx.Token(
+def lex_numbers(c: lxd.Cursor, s: lxd.Settings) -> lxd.Token:
+    t = lxd.Token(
         type='number',
         value=c.char
     )
@@ -36,11 +36,11 @@ if __name__ == '__main__':
 Too much work? Use the factory for predefined lexers.
 
 ```python
-import pylexer as plx
+import lexandra as lxd
 
-numbs_lexer: plx.Lexer = plx.factory.numbs_lexer()
-words_lexer: plx.Lexer = plx.factory.words_lexer()
-custom_lexer: plx.Lexer = plx.factory.custom_lexer(
+numbs_lexer: lxd.Lexer = lxd.factory.numbs_lexer()
+words_lexer: lxd.Lexer = lxd.factory.words_lexer()
+custom_lexer: lxd.Lexer = lxd.factory.custom_lexer(
     numbers='0123456789',
     words='qwertyuiopasdfghjklñzxcvbnm',
     allow_uppercase=True,
@@ -55,12 +55,12 @@ if __name__ == '__main__':
 
 ```
 
-# Cool stuffs with Pylexer
+# Cool stuffs with lexandra
 
 Create a highlight code in the terminal
 
 ```python
-import pylexer as plx
+import lexandra as lxd
 
 
 class Colors:
@@ -79,9 +79,9 @@ class Colors:
         return f'{color}{text}{cls._Reset}'
 
 
-json_lexer: plx.core.Lexer = plx.factory.custom_lexer(
-    numbers=plx.factory.NUMBERS,
-    letters=plx.factory.LETTERS,
+json_lexer: lxd.core.Lexer = lxd.factory.custom_lexer(
+    numbers=lxd.factory.NUMBERS,
+    letters=lxd.factory.LETTERS,
     strings='"',
     delimiters='{},:[]\n ',
     allow_float=True,
@@ -89,14 +89,14 @@ json_lexer: plx.core.Lexer = plx.factory.custom_lexer(
 )
 
 highlight_colors = {
-    plx.factory.NUMB_TOKEN: Colors.Blue,
-    plx.factory.WORD_TOKEN: Colors.Cyan,
-    plx.factory.STR_TOKEN: Colors.Green,
-    plx.factory.DLT_TOKEN: Colors.White,
+    lxd.factory.NUMB_TOKEN: Colors.Blue,
+    lxd.factory.WORD_TOKEN: Colors.Cyan,
+    lxd.factory.STR_TOKEN: Colors.Green,
+    lxd.factory.DLT_TOKEN: Colors.White,
 }
 
 
-def highlight(tokens: plx.core.TokenList) -> str:
+def highlight(tokens: lxd.core.TokenList) -> str:
     highlighted = ""
 
     for token in tokens:
@@ -111,7 +111,7 @@ if __name__ == '__main__':
         "json":{
             "type": "array",
             "length": 5,
-            "items": [true, false, "pylexer", 123456789]
+            "items": [true, false, "lexandra", 123456789]
         }
     }''')
 
@@ -125,7 +125,7 @@ Why not do the same but with CSS. No new lexer is needed, just replace the ASCII
 from string import Template
 import base64 as b64
 import webbrowser
-import pylexer as plx
+import lexandra as lxd
 
 BASE_HTML = Template(f'''
 <!DOCTYPE html>
@@ -146,16 +146,16 @@ BASE_HTML = Template(f'''
         padding: 30px;
         margin: 0 auto;
     }}
-    .token-{plx.factory.NUMB_TOKEN} {{
+    .token-{lxd.factory.NUMB_TOKEN} {{
         color: blue;
     }}
-    .token-{plx.factory.WORD_TOKEN} {{
+    .token-{lxd.factory.WORD_TOKEN} {{
         color: cyan;
     }}
-    .token-{plx.factory.STR_TOKEN} {{
+    .token-{lxd.factory.STR_TOKEN} {{
         color: green;
     }}
-    .token-{plx.factory.DLT_TOKEN} {{
+    .token-{lxd.factory.DLT_TOKEN} {{
         color: magenta;
     }}
     </style>
@@ -167,16 +167,16 @@ BASE_HTML = Template(f'''
 ''')
 
 
-json_lexer: plx.core.Lexer = plx.factory.custom_lexer(
-    numbers=plx.factory.NUMBERS,
-    letters=plx.factory.LETTERS,
+json_lexer: lxd.core.Lexer = lxd.factory.custom_lexer(
+    numbers=lxd.factory.NUMBERS,
+    letters=lxd.factory.LETTERS,
     strings='"',
     delimiters='{},:[]\n ',
     allow_float=True,
     allow_uppercase=True
 )
 
-def highlight(tokens: plx.core.TokenList) -> str:
+def highlight(tokens: lxd.core.TokenList) -> str:
     content = ""
 
     for token in tokens:
@@ -190,7 +190,7 @@ if __name__ == '__main__':
         "json":{
             "type": "array",
             "length": 5,
-            "items": [true, false, "pylexer", 123456789]
+            "items": [true, false, "lexandra", 123456789]
         }
     }''')
 
@@ -204,10 +204,10 @@ if __name__ == '__main__':
 # Need more decorators? Just extends!.
 
 ```python
-import pylexer as plx
+import lexandra as lxd
 
 
-class MathSettings(plx.core.Settings):
+class MathSettings(lxd.core.Settings):
     def __init__(self, numbers: str, operators: str, letters: str = '', strings: str = '', delimiters: str = '', ignores: str = '') -> None:
         super(MathSettings, self).__init__(
             numbers, letters, strings, delimiters, ignores)
@@ -219,7 +219,7 @@ class MathSettings(plx.core.Settings):
         return self.__Operators
 
 
-class MathLexer(plx.core.Lexer):
+class MathLexer(lxd.core.Lexer):
     def __init__(self, settings: MathSettings) -> None:
         super(MathLexer, self).__init__(settings)
         self.__LexOperators = None
@@ -227,10 +227,10 @@ class MathLexer(plx.core.Lexer):
         # Workaround for typing (avoid the use of generic just for keep it simple)
         self._Settings = settings
 
-    def operators(self, func: plx.core.LexFunction):
+    def operators(self, func: lxd.core.LexFunction):
         self.__LexOperators = func
 
-    def _extended_lex(self, cursor: plx.core.Cursor, tokens: plx.core.TokenList) -> bool:
+    def _extended_lex(self, cursor: lxd.core.Cursor, tokens: lxd.core.TokenList) -> bool:
         # Extending the lex conditions
 
         if cursor.char in self._Settings.operators:
@@ -248,8 +248,8 @@ lexer: MathLexer = MathLexer(
 
 
 @lexer.numbers
-def lex_numbs(cursor: plx.core.Cursor, settings: plx.core.Settings) -> plx.core.Token:
-    token = plx.core.Token(token_type="nums", value=cursor.char)
+def lex_numbs(cursor: lxd.core.Cursor, settings: lxd.core.Settings) -> lxd.core.Token:
+    token = lxd.core.Token(token_type="nums", value=cursor.char)
 
     cursor.advance()
 
@@ -261,8 +261,8 @@ def lex_numbs(cursor: plx.core.Cursor, settings: plx.core.Settings) -> plx.core.
 
 
 @lexer.operators
-def lex_ops(cursor: plx.core.Cursor, _: plx.core.Settings) -> plx.core.Token:
-    token = plx.core.Token(token_type="mathop", value=cursor.char)
+def lex_ops(cursor: lxd.core.Cursor, _: lxd.core.Settings) -> lxd.core.Token:
+    token = lxd.core.Token(token_type="mathop", value=cursor.char)
     cursor.advance()
     return token
 
